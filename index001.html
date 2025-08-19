@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hebron Medical Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a73e8;
+            --primary-light: #e8f0fe;
+            --secondary-color: #5f6368;
+            --background-light: #f8f9fa;
+            --border-color: #dadce0;
+            --white: #ffffff;
+            --shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: #202124;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 240px;
+            background-color: var(--white);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            padding: 12px 0;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 24px 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo i {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #5f6368;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 0 25px 25px 0;
+            margin: 5px 0;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: var(--primary-light);
+        }
+
+        .nav-item.active {
+            background-color: #d2e3fc;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            margin-right: 18px;
+            font-size: 20px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .storage-info {
+            padding: 20px 24px;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: var(--border-color);
+            border-radius: 2px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 35%;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .storage-text {
+            font-size: 12px;
+            color: var(--secondary-color);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 240px;
+            padding: 20px 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            border-radius: 8px;
+            padding: 8px 16px;
+            width: 50%;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 8px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .search-bar i {
+            color: var(--secondary-color);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions i {
+            font-size: 20px;
+            margin-left: 20px;
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        .user-profile {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .toolbar h2 {
+            font-size: 22px;
+            font-weight: 400;
+            color: #202124;
+        }
+
+        .toolbar-actions {
+            display: flex;
+        }
+
+        .btn {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 24px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--primary-light);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn.primary:hover {
+            background: #1b66c9;
+            box-shadow: var(--shadow);
+        }
+
+        /* File Grid Styles */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .file-card {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-card:hover {
+            box-shadow: var(--shadow);
+        }
+
+        .file-preview {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+        }
+
+        .file-preview i {
+            font-size: 48px;
+            color: var(--primary-color);
+        }
+
+        .file-info {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--secondary-color);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 30px;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .upload-area i {
+            font-size: 48px;
+            color: var(--secondary-color);
+            margin-bottom: 16px;
+        }
+
+        .upload-area h3 {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo h1, .nav-item span, .storage-info {
+                display: none;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 15px 0;
+            }
+            
+            .nav-item i {
+                margin-right: 0;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+                padding: 20px;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .search-bar {
+                width: 70%;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .toolbar-actions {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                margin: 0;
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fab fa-google-drive"></i>
+            <h1>Cloude Hebron</h1>
+        </div>
+        
+        <div class="nav-item active">
+            <i class="fas fa-th"></i>
+            <span>My Drive</span>
+        </div>
+        
+        <div class="nav-item">
+            <i class="fas fa-share-alt"></i>
+            <span>Shared with me</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>Recent</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-star"></i>
+            <span>Starred</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-trash-alt"></i>
+            <span>Trash</span>
+        </div>
+        
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search in Drive">
+            </div>
+            <div class="user-actions">
+                <i class="fas fa-cog"></i>
+                <i class="fas fa-apps"></i>
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+        
+        <div class="toolbar">
+            <h2>My Drive</h2>
+            <div class="toolbar-actions">
+                <div class="btn">
+                    <i class="fas fa-sort"></i>
+                    <span>Sort</span>
+                </div>
+                <div class="btn">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Details</span>
+                </div>
+                <div class="btn primary" id="newBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>New</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="file-grid">
+            <!-- Folder Card -->
+            <div class="file-card">
+                <div class="file-preview" style="background: #fce8e6;">
+                    <i class="fas fa-folder" style="color: #f44336;"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">Projects</div>
+                    <div class="file-details">
+                        <span>32 items</span>
+                        <span>Today</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Document Card -->
+            <div class="file-card">
+                <div class="file-preview">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">Project Proposal.docx</div>
+                    <div class="file-details">
+                        <span>1.2 MB</span>
+                        <span>Yesterday</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Card -->
+            <div class="file-card">
+                <div class="file-preview" style="background: #e6f4ea;">
+                    <i class="fas fa-file-image" style="color: #0f9d58;"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">Design Mockup.jpg</div>
+                    <div class="file-details">
+                        <span>4.5 MB</span>
+                        <span>2 days ago</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Spreadsheet Card -->
+            <div class="file-card">
+                <div class="file-preview" style="background: #e8f0fe;">
+                    <i class="fas fa-file-excel" style="color: #1a73e8;"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">Budget Q3.xlsx</div>
+                    <div class="file-details">
+                        <span>2.8 MB</span>
+                        <span>1 week ago</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PDF Card -->
+            <div class="file-card">
+                <div class="file-preview" style="background: #fef7e0;">
+                    <i class="fas fa-file-pdf" style="color: #f4b400;"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">Report.pdf</div>
+                    <div class="file-details">
+                        <span>3.1 MB</span>
+                        <span>2 weeks ago</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Card -->
+            <div class="file-card">
+                <div class="file-preview" style="background: #f3e8fd;">
+                    <i class="fas fa-file-video" style="color: #ab47bc;"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">Presentation.mp4</div>
+                    <div class="file-details">
+                        <span>15.2 MB</span>
+                        <span>3 weeks ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="upload-area" id="uploadArea">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h3>Upload files</h3>
+            <p>Drag and drop files here or click to browse</p>
+        </div>
+    </div>
+
+    <script>
+        // Simulate file upload functionality
+        document.getElementById('uploadArea').addEventListener('click', function() {
+            alert('File upload dialog would open here. In a real implementation, this would allow you to select files from your device.');
+        });
+
+        document.getElementById('newBtn').addEventListener('click', function() {
+            const options = ['Folder', 'Document', 'Spreadsheet', 'Presentation'];
+            let message = 'Create new:\n\n';
+            options.forEach((option, index) => {
+                message += `${index + 1}. ${option}\n`;
+            });
+            alert(message);
+        });
+
+        // Add hover effect to file cards
+        const fileCards = document.querySelectorAll('.file-card');
+        fileCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const fileName = this.querySelector('.file-name').textContent;
+                alert(`Opening file: ${fileName}`);
+            });
+        });
+
+        // Simulate search functionality
+        const searchInput = document.querySelector('.search-bar input');
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                alert(`Searching for: "${this.value}"`);
+            }
+        });
+    </script>
+</body>
+</html>
